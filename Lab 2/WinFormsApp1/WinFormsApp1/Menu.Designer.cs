@@ -55,6 +55,7 @@
             Ex2.TabIndex = 1;
             Ex2.Text = "Ex2";
             Ex2.UseVisualStyleBackColor = true;
+            Ex2.Click += Bai2;
             // 
             // Ex3
             // 
@@ -132,6 +133,12 @@
         {
             EX1 ex1 = new EX1();
             ex1.Show();
+        }
+
+        private void Bai2(object sender, EventArgs e)
+        {
+            EX2 ex2 = new EX2();
+            ex2.Show();
         }
     }
 }

@@ -42,6 +42,7 @@
             wordCountResult = new Label();
             charCountResult = new Label();
             fileContent = new Label();
+            exitButton = new Button();
             SuspendLayout();
             // 
             // read
@@ -52,6 +53,7 @@
             read.TabIndex = 0;
             read.Text = "read";
             read.UseVisualStyleBackColor = true;
+            read.Click += readClick;
             // 
             // fileName
             // 
@@ -157,11 +159,21 @@
             fileContent.Size = new Size(381, 400);
             fileContent.TabIndex = 13;
             // 
+            // exitButton
+            // 
+            exitButton.Location = new Point(43, 401);
+            exitButton.Name = "exitButton";
+            exitButton.Size = new Size(200, 37);
+            exitButton.TabIndex = 14;
+            exitButton.Text = "Exit";
+            exitButton.UseVisualStyleBackColor = true;
+            // 
             // EX2
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(exitButton);
             Controls.Add(fileContent);
             Controls.Add(charCountResult);
             Controls.Add(wordCountResult);
@@ -197,5 +209,6 @@
         private Label wordCountResult;
         private Label charCountResult;
         private Label fileContent;
+        private Button exitButton;
     }
 }
