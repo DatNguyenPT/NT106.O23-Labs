@@ -65,6 +65,7 @@
             Ex3.TabIndex = 2;
             Ex3.Text = "Ex3";
             Ex3.UseVisualStyleBackColor = true;
+            Ex3.Click += Bai3;
             // 
             // Ex4
             // 
@@ -139,6 +140,12 @@
         {
             EX2 ex2 = new EX2();
             ex2.Show();
+        }
+
+        private void Bai3(object sender, EventArgs e)
+        {
+            EX3 ex3 = new EX3();
+            ex3.Show();
         }
     }
 }
