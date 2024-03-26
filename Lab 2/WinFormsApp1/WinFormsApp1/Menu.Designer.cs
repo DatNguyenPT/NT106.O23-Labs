@@ -75,6 +75,7 @@
             Ex4.TabIndex = 3;
             Ex4.Text = "Ex4";
             Ex4.UseVisualStyleBackColor = true;
+            Ex4.Click += Bai4;
             // 
             // Ex5
             // 
@@ -146,6 +147,12 @@
         {
             EX3 ex3 = new EX3();
             ex3.Show();
+        }
+
+        private void Bai4(object sender, EventArgs e)
+        {
+            EX4 ex4 = new EX4();
+            ex4.Show();
         }
     }
 }
