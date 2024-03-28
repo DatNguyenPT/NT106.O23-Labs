@@ -16,8 +16,9 @@ namespace WinFormsApp1
         {
             InitializeComponent();
         }
-            private void DisplayTicketInfo(List<Tuple<int, int>> list, Dictionary<Tuple<string, double>, List<string>> filmPrices, Dictionary<string, double> seatPrices, string filmName)
+            private void DisplayTicketInfo(List<Tuple<int, int>> list, Dictionary<Tuple<string, double>, List<string>> filmPrices, Dictionary<string, double> seatPrices, string filmName, string section)
             {
+                EX5 ex5 = (EX5)this.Owner;
                 string result = $"Họ tên: {nameInput.Text}\n" +
                     $"Đã mua {list.Count} vé\n";
                 List<string> seatPosition = new List<string>();
@@ -56,6 +57,8 @@ namespace WinFormsApp1
                 }
                 result += $"Tổng tiền: {total}";
                 ticketInfo.Text = result;
+                Tuple<string, string> tuple = Tuple.Create(filmName, section);
+                ex5.revenue[tuple] += total;
             }
 
         // Event handler for Finish button click
@@ -71,7 +74,8 @@ namespace WinFormsApp1
                 Dictionary<Tuple<string, double>, List<string>> filmPrices = ex5.filmPrices;
                 Dictionary<string, double> seatPrices = ex5.seatPrices;
                 string filmName = this.filmName;
-                DisplayTicketInfo(selectedSeats, filmPrices, seatPrices, filmName);
+                string section = ex5.getSection();
+                DisplayTicketInfo(selectedSeats, filmPrices, seatPrices, filmName, section);
                 ex5.disableCheckedSeats();
                 ex5.updateSeatState();
                 finish.Text = "Kết thúc";
@@ -79,7 +83,6 @@ namespace WinFormsApp1
                 {
                     this.Close();
                 }
-
             }
         }
 

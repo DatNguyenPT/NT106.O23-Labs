@@ -36,6 +36,7 @@
             exit = new Button();
             theatreAccess = new Button();
             loadInfo = new Button();
+            writeFile = new Button();
             SuspendLayout();
             // 
             // filmList
@@ -102,17 +103,28 @@
             // 
             loadInfo.Location = new Point(44, 67);
             loadInfo.Name = "loadInfo";
-            loadInfo.Size = new Size(165, 28);
+            loadInfo.Size = new Size(202, 28);
             loadInfo.TabIndex = 6;
             loadInfo.Text = "Load thông tin film";
             loadInfo.UseVisualStyleBackColor = true;
             loadInfo.Click += loadInfoClick;
+            // 
+            // writeFile
+            // 
+            writeFile.Location = new Point(45, 114);
+            writeFile.Name = "writeFile";
+            writeFile.Size = new Size(201, 29);
+            writeFile.TabIndex = 7;
+            writeFile.Text = "Xuất thông tin doanh thu";
+            writeFile.UseVisualStyleBackColor = true;
+            writeFile.Click += write;
             // 
             // EX5
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(writeFile);
             Controls.Add(loadInfo);
             Controls.Add(theatreAccess);
             Controls.Add(exit);
@@ -243,5 +255,6 @@
         private Button exit;
         private Button theatreAccess;
         private Button loadInfo;
+        private Button writeFile;
     }
 }

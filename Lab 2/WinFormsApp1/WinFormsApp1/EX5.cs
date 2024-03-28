@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace WinFormsApp1
 {
@@ -15,8 +16,12 @@ namespace WinFormsApp1
     {
         public Dictionary<string, double> seatPrices { get; }
         public Dictionary<Tuple<string, double>, List<string>> filmPrices { get; }
+        public Dictionary<Tuple<string, string>, Tuple<long, long>> quantityList { get; } // with the value is a tuple wher
+        // item1 is default quantity and item2 is remaining quantity
         public System.Windows.Forms.CheckBox[,] seatStatusList;
         public Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]> filmWithSeatState { get; }
+        public Dictionary<Tuple<string, string>, double> revenue { get; }
+        List<string> filmNameList; 
         public EX5()
         {
             System.Windows.Forms.CheckBox[,] mySeatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
@@ -33,6 +38,9 @@ namespace WinFormsApp1
             filmPrices = new Dictionary<Tuple<string, double>, List<string>>();
             seatStatusList = new System.Windows.Forms.CheckBox[seatRows, seatCols];
             filmWithSeatState = new Dictionary<Tuple<string, string>, System.Windows.Forms.CheckBox[,]>();
+            quantityList = new Dictionary<Tuple<string, string>, Tuple<long, long>>();
+            filmNameList = new List<string>();
+            revenue = new Dictionary<Tuple<string, string>, double>();
             InitializeComponent();
             Load += Bai5_Load;
             createSeats(mySeatArray);
@@ -48,13 +56,13 @@ namespace WinFormsApp1
             {
                 using (StreamReader read = new StreamReader(ofd.FileName))
                 {
-                    Dictionary<string, List<string>> filmSections = new Dictionary<string, List<string>>(); // Lưu trữ các phòng chiếu cho mỗi phim
-                    List<string> filmNameList = new List<string>();
+                    Dictionary<string, List<string>> filmSections = new Dictionary<string, List<string>>();
+                    
                     string line;
                     while ((line = read.ReadLine()) != null)
                     {
                         var field = line.Split(';');
-                        if (field.Length < 3)
+                        if (field.Length < 4)
                         {
                             throw new Exception("Thiếu thông tin về film");
                         }
@@ -64,13 +72,16 @@ namespace WinFormsApp1
                             filmNameList.Add(filmName);
                             double price = Double.Parse(field[1]);
                             List<string> theatres = new List<string>(field[2].Split(','));
-                            filmSections.Add(filmName, theatres); // Thêm danh sách các phòng chiếu cho phim vào từ điển
+                            long quantity = long.Parse(field[3]);
+                            filmSections.Add(filmName, theatres);
                             Tuple<string, double> tuple = new Tuple<string, double>(filmName, price);
-                            System.Windows.Forms.CheckBox[,] seatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
-                            InitializeSeatArray(seatArray);
                             for (int i = 0; i < theatres.Count; i++)
                             {
+                                System.Windows.Forms.CheckBox[,] seatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
+                                InitializeSeatArray(seatArray);
                                 filmWithSeatState.Add(Tuple.Create(filmName, theatres[i]), seatArray);
+                                quantityList.Add(Tuple.Create(filmName, theatres[i]), Tuple.Create(quantity, (long)0));
+                                revenue.Add(Tuple.Create(filmName, theatres[i]), (double)0);
                             }
                             filmPrices.Add(tuple, theatres);
                         }
@@ -136,6 +147,7 @@ namespace WinFormsApp1
         {
             Tuple<string, string> temp = Tuple.Create(filmList.SelectedItem.ToString(), section.SelectedItem.ToString());
             bool[,] newStatus = saveSeatState();
+            int count = 0;
             if (filmWithSeatState.ContainsKey(temp))
             {
                 System.Windows.Forms.CheckBox[,] currentStatus = new System.Windows.Forms.CheckBox[seatRows, seatCols];
@@ -145,10 +157,18 @@ namespace WinFormsApp1
                     for (int j = 0; j < seatCols; j++)
                     {
                         currentStatus[i, j].Checked = newStatus[i, j];
+                        if (newStatus[i, j] == true)
+                        {
+                            count++;
+                        }
                         currentStatus[i, j].Enabled = !newStatus[i, j];
                     }
                 }
                 filmWithSeatState[temp] = currentStatus;
+                long remaining = quantityList[temp].Item2;
+                long def = quantityList[temp].Item1;
+                remaining -= def;
+                quantityList[temp] = Tuple.Create(def, remaining);
             }
         }
 
@@ -210,6 +230,56 @@ namespace WinFormsApp1
             else
             {
                 MessageBox.Show("Please select both film and section.");
+            }
+        }
+
+        public void write(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            if (!string.IsNullOrEmpty(ofd.FileName))
+            {
+                using (StreamWriter writer = new StreamWriter(ofd.FileName))
+                {
+                    foreach (var entry in quantityList)
+                    {
+                        writer.Write("Film Name: " + entry.Key.Item1 + "; ");
+                        writer.Write("Theatre: " + entry.Key.Item2 + "; ");
+                        writer.Write("Number of sold tickets: " + (entry.Value.Item1 - entry.Value.Item2) + "; ");
+                        writer.Write("Number of remaining tickets: " + entry.Value.Item2 + "; ");
+                        writer.Write("Selling Percentage: " + ((double)entry.Value.Item2 / entry.Value.Item1) + "; ");
+                        writer.Write("Revenue: " + revenue[entry.Key] + "\n");
+                    }
+                    List <Tuple<string, double>>filmRevenue = new List<Tuple<string, double>>();
+                    string sameName = filmNameList[0];
+                    double total = 0;
+                    foreach(var entry in revenue)
+                    {
+                        if (entry.Key.Item1.Equals(sameName))
+                        {
+                            total += revenue[entry.Key];
+                            sameName = entry.Key.Item2;
+                        }
+                        else
+                        {
+                            filmRevenue.Add(Tuple.Create(sameName, total));
+                            total = 0;
+                        }
+                    }
+                    writer.Write("Total revenue each film: \n");
+                    foreach(Tuple<string, double>tuple in filmRevenue)
+                    {
+                        writer.Write(tuple.Item1 + ": " + tuple.Item2 + "\n");
+                    }
+                    writer.Write("Revenue ranking: \n");
+                    filmRevenue = filmRevenue.OrderByDescending(x => x.Item2).ToList();
+                    long rank = 1;
+                    foreach (Tuple<string, double> tuple in filmRevenue)
+                    {
+                        writer.Write($"{rank++}"+ tuple.Item1 + "\n");
+                    }
+                    writer.Close();
+                }
             }
         }
 
