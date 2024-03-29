@@ -38,3 +38,6 @@ E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\bin\Deb
 E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.DataClass.resources
 E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.csproj.CopyComplete
 E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.EX6.resources
+E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\Interop.Microsoft.Office.Interop.Word.dll
+E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.csproj.ResolveComReference.cache
+E:\UIT\Sophomore\Network Programming\Lab\Lab 2\WinFormsApp1\WinFormsApp1\obj\Debug\net6.0-windows\WinFormsApp1.EX7.resources

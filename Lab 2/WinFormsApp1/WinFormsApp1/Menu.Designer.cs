@@ -105,6 +105,7 @@
             Ex7.TabIndex = 6;
             Ex7.Text = "Ex7";
             Ex7.UseVisualStyleBackColor = true;
+            Ex7.Click += Bai7;
             // 
             // Menu
             // 
@@ -166,6 +167,11 @@
         {
             EX6 ex6 = new EX6();
             ex6.Show();
+        }
+        private void Bai7(object sender, EventArgs e)
+        {
+            EX7 ex7 = new EX7();
+            ex7.Show();
         }
     }
 }
