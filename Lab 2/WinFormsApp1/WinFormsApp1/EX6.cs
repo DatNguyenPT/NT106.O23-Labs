@@ -60,9 +60,11 @@ namespace WinFormsApp1
                 ListViewItem item = new ListViewItem();
                 item.ImageKey = key;
                 foodBoard.Items.Add(item);
+                count++;
             }
             foodBoard.LargeImageList = imageList;
         }
+
 
 
         private void randomClick(object sender, EventArgs e)
