@@ -76,11 +76,12 @@ namespace WinFormsApp1
                 string filmName = this.filmName;
                 string section = ex5.getSection();
                 DisplayTicketInfo(selectedSeats, filmPrices, seatPrices, filmName, section);
-                ex5.disableCheckedSeats();
-                ex5.updateSeatState();
+                
                 finish.Text = "Kết thúc";
                 if (count == 2)
                 {
+                    ex5.disableCheckedSeats();
+                    ex5.updateSeatState();
                     this.Close();
                 }
             }

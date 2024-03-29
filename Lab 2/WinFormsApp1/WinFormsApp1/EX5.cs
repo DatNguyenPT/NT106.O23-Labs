@@ -72,7 +72,7 @@ namespace WinFormsApp1
                             filmNameList.Add(filmName);
                             double price = Double.Parse(field[1]);
                             List<string> theatres = new List<string>(field[2].Split(','));
-                            long quantity = long.Parse(field[3]);
+                            long quantity = this.getSeatCols() * this.getSeatRows(); // number of seats = number of tickets
                             filmSections.Add(filmName, theatres);
                             Tuple<string, double> tuple = new Tuple<string, double>(filmName, price);
                             for (int i = 0; i < theatres.Count; i++)
@@ -80,7 +80,7 @@ namespace WinFormsApp1
                                 System.Windows.Forms.CheckBox[,] seatArray = new System.Windows.Forms.CheckBox[seatRows, seatCols];
                                 InitializeSeatArray(seatArray);
                                 filmWithSeatState.Add(Tuple.Create(filmName, theatres[i]), seatArray);
-                                quantityList.Add(Tuple.Create(filmName, theatres[i]), Tuple.Create(quantity, (long)0));
+                                quantityList.Add(Tuple.Create(filmName, theatres[i]), Tuple.Create(quantity, quantity));
                                 revenue.Add(Tuple.Create(filmName, theatres[i]), (double)0);
                             }
                             filmPrices.Add(tuple, theatres);
@@ -167,7 +167,14 @@ namespace WinFormsApp1
                 filmWithSeatState[temp] = currentStatus;
                 long remaining = quantityList[temp].Item2;
                 long def = quantityList[temp].Item1;
-                remaining -= def;
+                if (remaining >= count)
+                {
+                    remaining -= count;
+                }
+                else
+                {
+                    MessageBox.Show("Không đủ vé");
+                }
                 quantityList[temp] = Tuple.Create(def, remaining);
             }
         }
@@ -247,7 +254,7 @@ namespace WinFormsApp1
                         writer.Write("Theatre: " + entry.Key.Item2 + "; ");
                         writer.Write("Number of sold tickets: " + (entry.Value.Item1 - entry.Value.Item2) + "; ");
                         writer.Write("Number of remaining tickets: " + entry.Value.Item2 + "; ");
-                        writer.Write("Selling Percentage: " + ((double)entry.Value.Item2 / entry.Value.Item1) + "; ");
+                        writer.Write("Selling Percentage: " + ((double)(entry.Value.Item1 - entry.Value.Item2) / entry.Value.Item1) + "; ");
                         writer.Write("Revenue: " + revenue[entry.Key] + "\n");
                     }
                     List <Tuple<string, double>>filmRevenue = new List<Tuple<string, double>>();
@@ -258,27 +265,31 @@ namespace WinFormsApp1
                         if (entry.Key.Item1.Equals(sameName))
                         {
                             total += revenue[entry.Key];
-                            sameName = entry.Key.Item2;
                         }
                         else
                         {
                             filmRevenue.Add(Tuple.Create(sameName, total));
-                            total = 0;
+                            total = revenue[entry.Key];
                         }
+                        sameName = entry.Key.Item1;
                     }
+                    filmRevenue.Add(Tuple.Create(sameName, total)); // add the last film
+                    writer.Write("------------------------------------------------------------------------------------\n");
                     writer.Write("Total revenue each film: \n");
                     foreach(Tuple<string, double>tuple in filmRevenue)
                     {
                         writer.Write(tuple.Item1 + ": " + tuple.Item2 + "\n");
                     }
+                    writer.Write("------------------------------------------------------------------------------------\n");
                     writer.Write("Revenue ranking: \n");
                     filmRevenue = filmRevenue.OrderByDescending(x => x.Item2).ToList();
                     long rank = 1;
                     foreach (Tuple<string, double> tuple in filmRevenue)
                     {
-                        writer.Write($"{rank++}"+ tuple.Item1 + "\n");
+                        writer.Write($"{rank++}: "+ tuple.Item1 + "\n");
                     }
                     writer.Close();
+                    MessageBox.Show("Đã xuất thông tin thành công");
                 }
             }
         }
