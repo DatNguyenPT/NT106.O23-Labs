@@ -19,6 +19,9 @@
     <Compile Update="EX5Payment.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="EX6.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Menu.cs">
       <SubType>Form</SubType>
     </Compile>
