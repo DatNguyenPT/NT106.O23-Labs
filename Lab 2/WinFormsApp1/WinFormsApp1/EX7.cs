@@ -17,7 +17,7 @@ namespace WinFormsApp1
                 pathdisk = drive.Name;
                 TreeNode root = new TreeNode(pathdisk);
                 TreeDirectory.Nodes.Add(root);
-                if (drive.Name == "D:\\") //Chỉ duyệt ổ D do ổ C duyệt lâu :v
+                if (drive.Name == "E:\\")
                 {
                     LoadExplorer(root);
                 }
