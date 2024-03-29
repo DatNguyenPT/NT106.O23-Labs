@@ -28,13 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             foodBoard = new ListView();
-            foodImage = new ImageList(components);
             randomButton = new Button();
             result = new Label();
-            foodBoardResult = new ListView();
-            foodImageResult = new ImageList(components);
+            foodBoardResult = new Label();
             SuspendLayout();
             // 
             // foodBoard
@@ -44,12 +41,6 @@
             foodBoard.Size = new Size(656, 278);
             foodBoard.TabIndex = 0;
             foodBoard.UseCompatibleStateImageBehavior = false;
-            // 
-            // foodImage
-            // 
-            foodImage.ColorDepth = ColorDepth.Depth8Bit;
-            foodImage.ImageSize = new Size(16, 16);
-            foodImage.TransparentColor = Color.Transparent;
             // 
             // randomButton
             // 
@@ -67,21 +58,13 @@
             result.Name = "result";
             result.Size = new Size(272, 22);
             result.TabIndex = 2;
-            result.Text = "Hôm nay ăn: ";
             // 
             // foodBoardResult
             // 
-            foodBoardResult.Location = new Point(545, 317);
+            foodBoardResult.Location = new Point(568, 318);
             foodBoardResult.Name = "foodBoardResult";
-            foodBoardResult.Size = new Size(151, 121);
+            foodBoardResult.Size = new Size(143, 123);
             foodBoardResult.TabIndex = 3;
-            foodBoardResult.UseCompatibleStateImageBehavior = false;
-            // 
-            // foodImageResult
-            // 
-            foodImageResult.ColorDepth = ColorDepth.Depth8Bit;
-            foodImageResult.ImageSize = new Size(16, 16);
-            foodImageResult.TransparentColor = Color.Transparent;
             // 
             // EX6
             // 
@@ -100,10 +83,8 @@
         #endregion
 
         private ListView foodBoard;
-        private ImageList foodImage;
         private Button randomButton;
         private Label result;
-        private ListView foodBoardResult;
-        private ImageList foodImageResult;
+        private Label foodBoardResult;
     }
 }
