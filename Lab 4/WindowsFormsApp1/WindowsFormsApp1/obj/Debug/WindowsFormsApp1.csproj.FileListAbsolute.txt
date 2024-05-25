@@ -1,0 +1,14 @@
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.dll
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\Newtonsoft.Json.xml
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.AssemblyReference.cache
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.SuggestedBindingRedirects.cache
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Ex6.resources
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.GenerateResource.cache
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CoreCompileInputs.cache
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.csproj.CopyComplete
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+E:\UIT\Sophomore\Network Programming\Lab\Lab 4\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
