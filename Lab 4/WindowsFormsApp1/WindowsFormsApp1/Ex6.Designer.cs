@@ -72,6 +72,7 @@
             this.getInfo.TabIndex = 5;
             this.getInfo.Text = "Get Info";
             this.getInfo.UseVisualStyleBackColor = true;
+            this.getInfo.Click += new System.EventHandler(this.Get); // Gắn sự kiện Click cho nút
             // 
             // userInfo
             // 
@@ -112,7 +113,6 @@
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -126,4 +126,3 @@
         private System.Windows.Forms.TextBox passwordInput;
     }
 }
-

@@ -11,17 +11,18 @@ namespace WindowsFormsApp1
         Uri infoURL = new Uri("https://nt106.uitiot.vn/api/v1/user/me");
         Uri tokenURL = new Uri("https://nt106.uitiot.vn/auth/token");
         String result = "";
+
         public Ex6()
         {
-            url.Text = "URL : https://nt106.uitiot.vn/api/v1/user/me";
             InitializeComponent();
+            url.Text = "URL : https://nt106.uitiot.vn/api/v1/user/me";
         }
-        
+
         public async void Get(Object sender, EventArgs e)
         {
-            String username = usernameInput.Text.ToString();    
+            String username = usernameInput.Text.ToString();
             String password = passwordInput.Text.ToString();
-            AuthAndGetInfo(username, password);
+            await AuthAndGetInfo(username, password);  // Await this method to ensure it completes
             userInfo.Text = result;
         }
 
@@ -41,6 +42,7 @@ namespace WindowsFormsApp1
                 {
                     var detail = responseObject["detail"].ToString();
                     Console.WriteLine($"Detail: {detail}");
+                    result = $"Error: {detail}";
                     return;
                 }
                 var tokenType = responseObject["token_type"].ToString();
@@ -48,8 +50,7 @@ namespace WindowsFormsApp1
                 client.DefaultRequestHeaders.Authorization = new
                 System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
                 var getUserResponse = await client.GetAsync(infoURL);
-                var getUserResponseString = await
-                getUserResponse.Content.ReadAsStringAsync();
+                var getUserResponseString = await getUserResponse.Content.ReadAsStringAsync();
                 result = getUserResponseString + "\n" + $"Auth Token : {accessToken}";
             }
         }
