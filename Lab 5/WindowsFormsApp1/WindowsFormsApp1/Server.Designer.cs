@@ -61,8 +61,9 @@
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(123, 84);
             this.saveBtn.TabIndex = 2;
-            this.saveBtn.Text = "READ & SAVE";
+            this.saveBtn.Text = "READ AND SAVE";
             this.saveBtn.UseVisualStyleBackColor = true;
+            this.saveBtn.Click += readAndSaveClick;
             // 
             // randomBtn
             // 
@@ -72,6 +73,7 @@
             this.randomBtn.TabIndex = 3;
             this.randomBtn.Text = "RANDOM";
             this.randomBtn.UseVisualStyleBackColor = true;
+            this.randomBtn.Click += random;
             // 
             // result
             // 
