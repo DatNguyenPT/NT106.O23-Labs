@@ -22,7 +22,7 @@ namespace WindowsFormsApp1
         {
             String username = usernameInput.Text.ToString();
             String password = passwordInput.Text.ToString();
-            await AuthAndGetInfo(username, password);  // Await this method to ensure it completes
+            await AuthAndGetInfo(username, password);  
             userInfo.Text = result;
         }
 
