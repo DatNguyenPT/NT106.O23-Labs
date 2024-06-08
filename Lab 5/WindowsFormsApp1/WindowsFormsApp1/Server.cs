@@ -1,12 +1,16 @@
-﻿using OpenPop.Pop3;
+﻿using MailKit;
+using MailKit.Net.Imap;
+using MimeKit;
 using System;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class Server : Form
+    public partial class Server : Form   
     {
-        private Pop3Client pop3Client;
+        // Pop3 => Only unread mails
+        // Imap => All mails
+        private ImapClient imapClient;
         private string email;
         private string password;
 
@@ -25,41 +29,46 @@ namespace WindowsFormsApp1
             InitializeComponent();
             email = emailAddress;
             this.password = password;
-            pop3Client = new Pop3Client();
-            Load += Server_Load;
-        }
-
-        private void Server_Load(object sender, EventArgs e)
-        {
-            FetchEmails();
+            imapClient = new ImapClient();
+            imapClient.Connect("imap.gmail.com", 993, true);
+            imapClient.Authenticate(email, password);
+            if (imapClient.IsAuthenticated)
+            {
+                MessageBox.Show("IMAP is connected\n" + $"{email}, {password}");
+                FetchEmails();
+            }
         }
 
         private void FetchEmails()
         {
             try
             {
-                pop3Client.Connect("pop.gmail.com", 995, true);
-                pop3Client.Authenticate(email, password);
-
                 // Clear existing items in the ListView
                 mailList.Items.Clear();
 
                 mailList.View = View.Details;
                 mailList.Columns.Add("Sender", 200);
                 mailList.Columns.Add("Subject", 300);
-                int messageCount = pop3Client.GetMessageCount();
-                for (int i = 1; i <= messageCount; i++)
+
+                imapClient.Inbox.Open(FolderAccess.ReadOnly);
+                var messageCount = imapClient.Inbox.Count;
+                for (int i = 0; i < messageCount; i++)
                 {
-                    var message = pop3Client.GetMessage(i);
-                    string senderEmail = message.Headers.From.Address;
-                    string subject = message.Headers.Subject;
-                    if (subject.Equals("Đóng góp món ăn", StringComparison.OrdinalIgnoreCase))
+                    var message = imapClient.Inbox.GetMessage(i);
+                    string senderEmail = message.From.ToString();
+                    string subject = message.Subject;
+                    if (subject.Equals("Đóng góp món ăn"))
                     {
+                        if (string.IsNullOrEmpty(senderEmail))
+                        {
+                            senderEmail = "Người ẩn danh";
+                        }
                         ListViewItem item = new ListViewItem(senderEmail);
                         item.SubItems.Add(subject);
                         mailList.Items.Add(item);
                     }
                 }
+                mailList.Refresh();
             }
             catch (Exception ex)
             {
@@ -67,12 +76,8 @@ namespace WindowsFormsApp1
             }
             finally
             {
-                if (pop3Client.Connected)
-                {
-                    pop3Client.Disconnect();
-                }
+                imapClient.Disconnect(true);
             }
         }
-
     }
 }
