@@ -50,15 +50,16 @@ namespace WindowsFormsApp1
         {
             try
             {
-                // Clear existing items in the ListView
+                // Clear existing items in the ListView and add columns only once
                 mailList.Items.Clear();
-                mailList.FullRowSelect = true;
-
                 mailList.View = View.Details;
-                mailList.Columns.Add("Sender", 150);
-                mailList.Columns.Add("Subject", 150);
-                mailList.Columns.Add("Food", 150);
-                mailList.Columns.Add("Read", 50);
+                if (mailList.Columns.Count == 0)
+                {
+                    mailList.Columns.Add("Sender", 150);
+                    mailList.Columns.Add("Subject", 150);
+                    mailList.Columns.Add("Food", 150);
+                    mailList.Columns.Add("Read", 50);
+                }
 
                 imapClient.Inbox.Open(FolderAccess.ReadOnly);
 
@@ -116,7 +117,6 @@ namespace WindowsFormsApp1
         {
             try
             {
-                int count = 1;
                 foreach (ListViewItem item in mailList.Items)
                 {
                     // Get the full message
@@ -127,7 +127,7 @@ namespace WindowsFormsApp1
 
                     if (!attachments.Any())
                     {
-                        MessageBox.Show($"No attachment found in mail {count}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"No attachment found in mail {item.Index + 1}", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
@@ -157,40 +157,43 @@ namespace WindowsFormsApp1
                                     {
                                         try
                                         {
-                                            var connection = new SqliteConnection($"Data Source={databasePath}");
-                                            connection.Open();
-                                            var command = new SqliteCommand(query, connection);
-                                            command.Parameters.AddWithValue("@senderEmail", senderEmail);
-                                            command.Parameters.AddWithValue("@imageDataBase64", imageDataBase64);
-                                            command.Parameters.AddWithValue("@foodText", foodText);
-                                            var rowInserted = command.ExecuteNonQuery();
-                                            if (rowInserted != 0)
+                                            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
                                             {
-                                                MessageBox.Show("New foods saved to the database successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                            }
-                                            else
-                                            {
-                                                MessageBox.Show("No foods are saved to the database", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                                connection.Open();
+                                                using (var command = new SqliteCommand(query, connection))
+                                                {
+                                                    command.Parameters.AddWithValue("@senderEmail", senderEmail);
+                                                    command.Parameters.AddWithValue("@imageDataBase64", imageDataBase64);
+                                                    command.Parameters.AddWithValue("@foodText", foodText);
+                                                    var rowInserted = command.ExecuteNonQuery();
+                                                    if (rowInserted != 0)
+                                                    {
+                                                        MessageBox.Show("New foods saved to the database successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                                    }
+                                                    else
+                                                    {
+                                                        MessageBox.Show("No foods are saved to the database", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                                    }
+                                                }
                                             }
                                         }
                                         catch (SqliteException ex)
                                         {
-                                            MessageBox.Show(ex.Message);
+                                            MessageBox.Show(ex.Message, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("No attachment found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("No valid image attachment found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("No attachment found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("No valid attachment found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
                     }
-                    count++;
                 }
             }
             catch (Exception ex)
@@ -211,9 +214,8 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (entity is MessagePart)
+            else if (entity is MessagePart messagePart)
             {
-                var messagePart = (MessagePart)entity;
                 foreach (var attachment in GetAttachments(messagePart.Message.Body))
                 {
                     yield return attachment;
@@ -230,10 +232,16 @@ namespace WindowsFormsApp1
 
         private bool IsFoodTextExistInDatabase(string foodText)
         {
-            string query = $"SELECT COUNT(*) FROM food WHERE food = '{foodText}'";
-            DataTable result = sqlite.dataQuery(query);
-            int count = Convert.ToInt32(result.Rows[0][0]);
-            return count > 0;
+            string query = "SELECT COUNT(*) FROM food WHERE food = @foodText";
+            using (var connection = new SqliteConnection($"Data Source={databasePath}"))
+            {
+                connection.Open();
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@foodText", foodText);
+                    return Convert.ToInt32(command.ExecuteScalar()) > 0;
+                }
+            }
         }
 
         private void random(object sender, EventArgs e)
@@ -258,7 +266,7 @@ namespace WindowsFormsApp1
                     {
                         Image image = Image.FromStream(memoryStream);
                         imageResult.Image = image;
-                        result.Text += foodText + $" Provided by {senderEmail}";
+                        result.Text = foodText + $" Provided by {senderEmail}";
                     }
                 }
                 else
