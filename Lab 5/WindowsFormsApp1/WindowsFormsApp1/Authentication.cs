@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
@@ -26,6 +25,8 @@ namespace WindowsFormsApp1
                 {
                     smtpClient.EnableSsl = true;
                     smtpClient.Credentials = new NetworkCredential(emailAddress, password);
+                    
+                    //Test connection
                     //await smtpClient.SendMailAsync("datnpt2004@gmail.com", emailAddress, "Test", "Test");
 
                     MessageBox.Show("Connected successfully");

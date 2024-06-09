@@ -51,13 +51,13 @@
             this.mailList.HideSelection = false;
             this.mailList.Location = new System.Drawing.Point(12, 76);
             this.mailList.Name = "mailList";
-            this.mailList.Size = new System.Drawing.Size(458, 353);
+            this.mailList.Size = new System.Drawing.Size(663, 629);
             this.mailList.TabIndex = 1;
             this.mailList.UseCompatibleStateImageBehavior = false;
             // 
             // saveBtn
             // 
-            this.saveBtn.Location = new System.Drawing.Point(500, 76);
+            this.saveBtn.Location = new System.Drawing.Point(782, 136);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(123, 84);
             this.saveBtn.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             // randomBtn
             // 
-            this.randomBtn.Location = new System.Drawing.Point(500, 187);
+            this.randomBtn.Location = new System.Drawing.Point(782, 240);
             this.randomBtn.Name = "randomBtn";
             this.randomBtn.Size = new System.Drawing.Size(123, 84);
             this.randomBtn.TabIndex = 3;
@@ -78,7 +78,7 @@
             // result
             // 
             this.result.AutoSize = true;
-            this.result.Location = new System.Drawing.Point(520, 301);
+            this.result.Location = new System.Drawing.Point(699, 378);
             this.result.Name = "result";
             this.result.Size = new System.Drawing.Size(85, 16);
             this.result.TabIndex = 4;
@@ -86,9 +86,9 @@
             // 
             // imageResult
             // 
-            this.imageResult.Location = new System.Drawing.Point(523, 330);
+            this.imageResult.Location = new System.Drawing.Point(702, 409);
             this.imageResult.Name = "imageResult";
-            this.imageResult.Size = new System.Drawing.Size(265, 99);
+            this.imageResult.Size = new System.Drawing.Size(265, 222);
             this.imageResult.TabIndex = 5;
             this.imageResult.TabStop = false;
             // 
@@ -96,7 +96,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1201, 717);
             this.Controls.Add(this.imageResult);
             this.Controls.Add(this.result);
             this.Controls.Add(this.randomBtn);

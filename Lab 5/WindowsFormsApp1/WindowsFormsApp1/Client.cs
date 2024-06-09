@@ -51,7 +51,14 @@ namespace WindowsFormsApp1
                 try
                 {
                     MailMessage msg = new MailMessage();
-                    msg.From = new MailAddress(fromInput.Text);
+                    if (string.IsNullOrWhiteSpace(fromInput.Text))
+                    {
+                        msg.From = new MailAddress("Người ẩn danh");
+                    }
+                    else
+                    {
+                        msg.From = new MailAddress(fromInput.Text);
+                    }
                     msg.To.Add(toInput.Text);
                     msg.Subject = titleInput.Text;
                     msg.Body = bodyInput.Text;
@@ -60,16 +67,21 @@ namespace WindowsFormsApp1
                     if (images.Image != null && images.Tag != null)
                     {
                         string imagePath = images.Tag.ToString();
-                        Attachment attachment = new Attachment(imagePath);
-                        msg.Attachments.Add(attachment);
+                        if (File.Exists(imagePath))
+                        {
+                            Attachment attachment = new Attachment(imagePath);
+                            msg.Attachments.Add(attachment);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Image file does not exist at the specified path.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
 
                     SmtpClient smt = new SmtpClient();
                     smt.Host = "smtp.gmail.com";
                     smt.EnableSsl = true;
-
                     smt.Credentials = new NetworkCredential("22520217@gm.uit.edu.vn", "1805709989");
-
                     smt.Port = 587;
                     smt.Send(msg);
 
